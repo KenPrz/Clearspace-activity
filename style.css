@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;700&display=swap');
+* {
+    background-color: #121212;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+.main-container h1{
+    font-family:sans-serif;
+    font-weight: 100;
+}
+.container-child {
+    text-align: center;
+}
+
+.container-child form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.error {
+    color: rgba(212, 125, 125, 0.829);
+    font-size: 8px;
+    float: right;
+    align-items: flex-end;
+}
+
+.container-child input{
+    margin-bottom: 10px;
+    transition: .5s ease;
+}
+
+.container-child input::placeholder{
+    padding: .2em;
+}
+.container-child input:hover{
+    background-color: rgba(192, 192, 192, 0.033);
+}
+.container-child input[type=email]:focus,
+.container-child input[type=password]:focus,
+.container-child input[type=text]:focus {
+    outline: none;
+    border-color: none;
+}
+.container-child input[type=email],
+.container-child input[type=password],
+.container-child input[type=text] {
+    padding: 1em 0em 1em 0em;
+    transition: .5s;
+    border-bottom: 1px solid white;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    transition: .5s;
+    width: 100%;
+}
+
+.container-child input[type=submit]{
+    padding: 1em 0em 1em 0em;
+    margin-top: 1em;
+    width: 100%;
+    transition: .5s ease;
+    border: solid white 1px;
+}
+.container-child input[type=submit]:hover{
+    background-color: rgba(128, 128, 128, 0.276);
+    cursor: pointer;
+}
+.user-name{
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    margin: 0;
+    width: 100%;
+}
+.lower-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-top: 1rem;
+}
+.footer-child {
+    margin: 0 10px;
+}
+.footer-child a {
+    font-size: 13px;
+    color: rgb(155, 155, 155);
+    text-decoration: none;
+    transition: .5s ease;
+}
+.footer-child a:hover {
+    color: white;
+    transition: .5s ease;
+}
