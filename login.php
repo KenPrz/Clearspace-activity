@@ -2,29 +2,31 @@
     session_start();
     include('connection.php');
     include('functions.php');
+    $loginErr = '';
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Something was posted
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-    
-        if (!empty($email) && !empty($password) && !is_numeric($email)) {
-            // Read from database
-            $query = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
-            $result = mysqli_query($con, $query);
-    
-            if ($result && mysqli_num_rows($result) > 0) {
-                $user_data = mysqli_fetch_assoc($result);
+        $email = sanitizeInput($_POST['email']);
+        $password = sanitizeInput($_POST['password']);
+        $errors = 0;
+        if ($errors == 0) {
+            // Read from database using prepared statements
+            $stmt = $con->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if ($result && $result->num_rows > 0) {
+                $user_data = $result->fetch_assoc();
                 if (password_verify($password, $user_data['password'])) {
                     $_SESSION['id'] = $user_data['id'];
                     header("Location: index.php");
                     die;
                 }
             }
-            
-            echo "Wrong username or password!";
+            $loginErr = 'Invalid username or password!';
         } else {
-            echo "Wrong username or password!";
-        }
+            $loginErr = 'Invalid username or password!';
+        }    
     }
 ?>
 <!DOCTYPE html>
@@ -33,7 +35,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
     <div class="main-container">
@@ -42,6 +44,7 @@
             <form action="" method="post">
                 <input type="email" name="email" placeholder="Email Address">
                 <input type="password" name="password" placeholder="Password">
+                <span class="error"><?php echo $loginErr ?></span>
                 <input class="submit-button" type="submit" value="Login">
             </form>
         </div>

@@ -1,5 +1,4 @@
 <?php
-
 function check_login($con)
 {
 	if(isset($_SESSION['id']))
@@ -20,4 +19,13 @@ function check_login($con)
 	header("Location: login.php");
 	die;
 
+}
+function sanitizeInput($input) {
+	// Remove leading/trailing whitespaces
+	$input = trim($input);
+	// Remove backslashes
+	$input = stripslashes($input);
+	// Convert special characters to HTML entities
+	$input = htmlspecialchars($input);
+	return $input;
 }

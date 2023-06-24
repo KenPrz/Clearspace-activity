@@ -25,10 +25,8 @@
     align-items: center;
 }
 .error {
-    color: rgba(212, 125, 125, 0.829);
-    font-size: 8px;
-    float: right;
-    align-items: flex-end;
+    color: rgba(212, 125, 125, 0.556);
+    font-size: 12px;
 }
 
 .container-child input{
