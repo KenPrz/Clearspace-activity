@@ -6,3 +6,4 @@
 
 + add form validation
 + add security feature (PDO for safety)
++ password length verifier

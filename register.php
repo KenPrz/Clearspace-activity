@@ -9,7 +9,7 @@
         $first_name = $_POST['firstName'];
         $last_name = $_POST['lastName'];
 		$email = $_POST['email'];
-		$password =$_POST['password'];  // password_hash(, PASSWORD_DEFAULT);
+		$password =$_POST['password'];
 		if(!empty($first_name)&& !empty($last_name) && !empty($email) && !empty($password) && !is_numeric($user_name))
 		{
             $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
