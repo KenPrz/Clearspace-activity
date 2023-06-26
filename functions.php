@@ -32,3 +32,9 @@ function name_formatter($name){
 	$formattedName = strtolower($name);
 	return $name = ucwords($formattedName);
 }
+
+function getTime($timeNow, $numOfHours) {
+    $hoursLater = strtotime("+$numOfHours hours", $timeNow);
+    $timestampFormatted = date('Y-m-d H:i:s', $hoursLater);
+    return $timestampFormatted;
+}

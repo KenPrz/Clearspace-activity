@@ -9,40 +9,42 @@
         $email = sanitizeInput($_POST['email']);
         $password = sanitizeInput($_POST['password']);
         $errors = 0;
-        if ($errors == 0) {
+        if (!empty($email && $password)){
             // Read from database using prepared statements
             $stmt = $con->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
-        
             if ($result && $result->num_rows > 0) {
                 $user_data = $result->fetch_assoc();
-                if (password_verify($password, $user_data['password'])) {
-                    $_SESSION['id'] = $user_data['id'];
+                if($user_data['login_attempts']>10){
+                    $loginErr = 'You have reached the maximum amount of attempts <br> please contact your administrator';
+                }
+                else{
+                    if (password_verify($password, $user_data['password'])) {
+                        $_SESSION['id'] = $user_data['id'];
 
-                    // Update login attempts
-                    $stmt = $con->prepare("UPDATE users SET login_attempts = ? WHERE id = ?");
-                    $new_login_attempts = 0;
-                    $stmt->bind_param("ii", $new_login_attempts, $user_data['id']);
-                    $stmt->execute();
-                    $stmt->close();
-
-                    header("Location: index.php");
-                    die;
-                } else {
-                    // Update login attempts
-                    $stmt = $con->prepare("UPDATE users SET login_attempts = ? WHERE id = ?");
-                    $new_login_attempts = $user_data['login_attempts'] + 1;
-                    $stmt->bind_param("ii", $new_login_attempts, $user_data['id']);
-                    $stmt->execute();
-                    $stmt->close();
-                    $loginErr = 'Invalid username or password! <br> remaining attempts: '. 10 - $user_data['login_attempts'];
-
+                        // Update login attempts
+                        $stmt = $con->prepare("UPDATE users SET login_attempts = ? WHERE id = ?");
+                        $new_login_attempts = 0;
+                        $stmt->bind_param("ii", $new_login_attempts, $user_data['id']);
+                        $stmt->execute();
+                        $stmt->close();
+                        header("Location: index.php");
+                        die;
+                    } else {
+                        // Update login attempts
+                        $stmt = $con->prepare("UPDATE users SET login_attempts = ? WHERE id = ?");
+                        $new_login_attempts = $user_data['login_attempts'] + 1;
+                        $stmt->bind_param("ii", $new_login_attempts, $user_data['id']);
+                        $stmt->execute();
+                        $stmt->close();
+                        $loginErr = 'Invalid username or password! <br> remaining attempts:'. 10 - $user_data['login_attempts'];
+                    }
                 }
             }
         } else {
-            $loginErr = 'Invalid username or password!';
+            $loginErr = 'Provide the required fields!';
         } 
     }
 ?>
