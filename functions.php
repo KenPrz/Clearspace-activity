@@ -3,7 +3,6 @@ function check_login($con)
 {
 	if(isset($_SESSION['id']))
 	{
-
 		$id = $_SESSION['id'];
 		$query = "select * from users where id = '$id' limit 1";
 
@@ -14,7 +13,6 @@ function check_login($con)
 			return $user_data;
 		}
 	}
-
 	//redirect to login
 	header("Location: login.php");
 	die;
@@ -28,4 +26,9 @@ function sanitizeInput($input) {
 	// Convert special characters to HTML entities
 	$input = htmlspecialchars($input);
 	return $input;
+}
+
+function name_formatter($name){
+	$formattedName = strtolower($name);
+	return $name = ucwords($formattedName);
 }

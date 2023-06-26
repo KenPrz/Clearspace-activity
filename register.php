@@ -5,7 +5,7 @@
     $nameErr=$emailErr='';
     $passwordErr[]='';
     $first_name = $last_name = $email = ''; // Initialize variables for input values
-    
+    $login_attempts = 0;
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // Something was posted
         $first_name = sanitizeInput($_POST['firstName']);
@@ -43,8 +43,8 @@
             $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
             
             // Save to database using prepared statements
-            $stmt = $con->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashedpassword);
+            $stmt = $con->prepare("INSERT INTO users (first_name, last_name, email, password, login_attempts) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssi", $first_name, $last_name, $email, $hashedpassword, $login_attempts);
             $stmt->execute();
             $stmt->close();
             header("Location: login.php");
@@ -52,7 +52,6 @@
         } 
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,15 +91,15 @@
         </div>
         <div class="lower-container">
             <div class="footer-child">
+                <a href="https://forms.gle/exTtMwKNzS8iqvuy9">Rate</a>     
+            </div>
+            <hr>
+            <div class="footer-child">
                 <a href="login.php">Login</a>
             </div>
             <hr>
             <div class="footer-child">
-                <a href="#">Recover</a>
-            </div>
-            <hr>
-            <div class="footer-child">
-                <a href="about.php">About Us</a>
+                <a href="about.php">About</a>
             </div>
         </div>
     </div>
